@@ -10,11 +10,13 @@ public class Player : MonoBehaviour {
     Rigidbody2D myRigidbody;
     SpriteRenderer playerSprite;
     Animator animator;
+    Collider2D myCollider;
 
     void Start () {
         myRigidbody = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        myCollider = GetComponent<Collider2D>();
 	}
 	
 	void Update () {
@@ -51,7 +53,8 @@ public class Player : MonoBehaviour {
 
     private void Jump()
     {
-        if (CrossPlatformInputManager.GetButtonDown("Jump"))
+        var IsTouchingGround = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        if (CrossPlatformInputManager.GetButtonDown("Jump") && IsTouchingGround)
         {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpPower);
             myRigidbody.velocity += jumpVelocityToAdd;
