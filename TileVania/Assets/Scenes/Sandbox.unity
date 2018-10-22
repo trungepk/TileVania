@@ -5776,10 +5776,20 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 212271966597880276, guid: c21904973af5dc0499650fb52aab694e,
+    - target: {fileID: 114043547848371964, guid: c21904973af5dc0499650fb52aab694e,
         type: 2}
-      propertyPath: m_FlipX
-      value: 0
+      propertyPath: jumpPower
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 50383261637045440, guid: c21904973af5dc0499650fb52aab694e,
+        type: 2}
+      propertyPath: m_GravityScale
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 50383261637045440, guid: c21904973af5dc0499650fb52aab694e,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c21904973af5dc0499650fb52aab694e, type: 2}
