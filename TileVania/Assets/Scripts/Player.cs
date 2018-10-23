@@ -7,6 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class Player : MonoBehaviour {
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpPower = 5f;
+    [SerializeField] float climbSpeed = 5f;
     Rigidbody2D myRigidbody;
     SpriteRenderer playerSprite;
     Animator animator;
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour {
 	void Update () {
         Run();
         Jump();
+        ClimbLadder();
 	}
 
     private void Run()
@@ -47,8 +49,8 @@ public class Player : MonoBehaviour {
 
     private void TransitionToRunningAnimation()
     {
-        bool isPlayerRunning = myRigidbody.velocity.x != 0;
-        animator.SetBool("Running", isPlayerRunning);
+        var IsPlayerRunning = myRigidbody.velocity.x != 0;
+        animator.SetBool("Running", IsPlayerRunning);
     }
 
     private void Jump()
@@ -59,5 +61,20 @@ public class Player : MonoBehaviour {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpPower);
             myRigidbody.velocity += jumpVelocityToAdd;
         }
+    }
+
+    private void ClimbLadder()
+    {
+        if (!myCollider.IsTouchingLayers(LayerMask.GetMask("Ladder"))){ return; }
+        var controlThrow = CrossPlatformInputManager.GetAxis("Vertical") * climbSpeed * Time.deltaTime;
+        Vector2 climbVelocity = new Vector2(myRigidbody.velocity.x, controlThrow);
+        myRigidbody.velocity = climbVelocity;
+        TransitionToClimbingAnimation();
+    }
+
+    private void TransitionToClimbingAnimation()
+    {
+        var IsPlayerClimbing = myRigidbody.velocity.y > 0;
+        animator.SetBool("Climbing", IsPlayerClimbing);
     }
 }
