@@ -12,12 +12,14 @@ public class Player : MonoBehaviour {
     SpriteRenderer playerSprite;
     Animator animator;
     Collider2D myCollider;
+    float gravityScaleAtStart;
 
     void Start () {
         myRigidbody = GetComponent<Rigidbody2D>();
         playerSprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         myCollider = GetComponent<Collider2D>();
+        gravityScaleAtStart = myRigidbody.gravityScale;
 	}
 	
 	void Update () {
@@ -29,8 +31,8 @@ public class Player : MonoBehaviour {
     private void Run()
     {
         var controlThrow = CrossPlatformInputManager.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-        Vector2 playerVelocity = new Vector2(controlThrow, myRigidbody.velocity.y);
-        myRigidbody.velocity = playerVelocity;
+        Vector2 runningVelocity = new Vector2(controlThrow, myRigidbody.velocity.y);
+        myRigidbody.velocity = runningVelocity;
         FlipSprite();
         TransitionToRunningAnimation();
     }
@@ -38,13 +40,9 @@ public class Player : MonoBehaviour {
     private void FlipSprite()
     {
         if (myRigidbody.velocity.x > 0)
-        {
             playerSprite.flipX = false;
-        }
         else if(myRigidbody.velocity.x < 0)
-        {
             playerSprite.flipX = true;
-        }
     }
 
     private void TransitionToRunningAnimation()
@@ -65,16 +63,22 @@ public class Player : MonoBehaviour {
 
     private void ClimbLadder()
     {
-        if (!myCollider.IsTouchingLayers(LayerMask.GetMask("Ladder"))){ return; }
+        if (!myCollider.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        {
+            animator.SetBool("Climbing", false);
+            myRigidbody.gravityScale = gravityScaleAtStart;
+            return;
+        }
         var controlThrow = CrossPlatformInputManager.GetAxis("Vertical") * climbSpeed * Time.deltaTime;
         Vector2 climbVelocity = new Vector2(myRigidbody.velocity.x, controlThrow);
         myRigidbody.velocity = climbVelocity;
+        myRigidbody.gravityScale = 0f;
         TransitionToClimbingAnimation();
     }
 
     private void TransitionToClimbingAnimation()
     {
-        var IsPlayerClimbing = myRigidbody.velocity.y > 0;
+        var IsPlayerClimbing = myRigidbody.velocity.y != 0;
         animator.SetBool("Climbing", IsPlayerClimbing);
     }
 }
