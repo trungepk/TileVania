@@ -53,7 +53,7 @@ public class Player : MonoBehaviour {
 
     private void Jump()
     {
-        var IsTouchingGround = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground"));
+        var IsTouchingGround = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && myRigidbody.velocity.y == 0;
         if (CrossPlatformInputManager.GetButtonDown("Jump") && IsTouchingGround)
         {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpPower);

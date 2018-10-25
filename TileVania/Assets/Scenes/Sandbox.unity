@@ -3905,6 +3905,19 @@ Prefab:
       propertyPath: m_BoundingShape2D
       value: 
       objectReference: {fileID: 978816235}
+    - target: {fileID: 4798232323897166, guid: f17040c11a0cf9c4baa27c13c8221b20, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -1.633769
+      objectReference: {fileID: 0}
+    - target: {fileID: 4798232323897166, guid: f17040c11a0cf9c4baa27c13c8221b20, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.724366
+      objectReference: {fileID: 0}
+    - target: {fileID: 20069467209967362, guid: f17040c11a0cf9c4baa27c13c8221b20,
+        type: 2}
+      propertyPath: orthographic size
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f17040c11a0cf9c4baa27c13c8221b20, type: 2}
   m_IsPrefabAsset: 0
