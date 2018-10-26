@@ -8,11 +8,14 @@ public class Player : MonoBehaviour {
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpPower = 5f;
     [SerializeField] float climbSpeed = 5f;
+    [SerializeField] Vector2 deathKick = new Vector2(25f, 25f);
+
     Rigidbody2D myRigidbody;
     SpriteRenderer playerSprite;
     Animator animator;
     Collider2D myCollider;
     float gravityScaleAtStart;
+    bool isAlive = true;
 
     void Start () {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -23,9 +26,11 @@ public class Player : MonoBehaviour {
 	}
 	
 	void Update () {
+        if (!isAlive) { return; }
         Run();
         Jump();
         ClimbLadder();
+        Die();
 	}
 
     private void Run()
@@ -53,8 +58,8 @@ public class Player : MonoBehaviour {
 
     private void Jump()
     {
-        var IsTouchingGround = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && myRigidbody.velocity.y == 0;
-        if (CrossPlatformInputManager.GetButtonDown("Jump") && IsTouchingGround)
+        var isTouchingGround = myCollider.IsTouchingLayers(LayerMask.GetMask("Ground")) && myRigidbody.velocity.y == 0;
+        if (CrossPlatformInputManager.GetButtonDown("Jump") && isTouchingGround)
         {
             Vector2 jumpVelocityToAdd = new Vector2(0f, jumpPower);
             myRigidbody.velocity += jumpVelocityToAdd;
@@ -74,6 +79,16 @@ public class Player : MonoBehaviour {
         myRigidbody.velocity = climbVelocity;
         myRigidbody.gravityScale = 0f;
         TransitionToClimbingAnimation();
+    }
+
+    private void Die()
+    {
+        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Enemy")))
+        {
+            animator.SetTrigger("Dying");
+            myRigidbody.velocity = deathKick;
+            isAlive = false;
+        }
     }
 
     private void TransitionToClimbingAnimation()
