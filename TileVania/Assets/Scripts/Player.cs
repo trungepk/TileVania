@@ -25,7 +25,7 @@ public class Player : MonoBehaviour {
         gravityScaleAtStart = myRigidbody.gravityScale;
 	}
 	
-	void Update () {
+	void FixedUpdate () {
         if (!isAlive) { return; }
         Run();
         Jump();
